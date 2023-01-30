@@ -1,12 +1,12 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
+const MAX_ID_NUMBER=10000000000;
+const MIN_ID_NUMBER=1;
 
-export async function encryptPassword(unhasedPassword:string){
-    let hashedPassword= bcrypt.hash(unhasedPassword,10);
-    return hashedPassword; 
+export async function encryptPassword(unhasedPassword: string) {
+  let hashedPassword = bcrypt.hash(unhasedPassword, 10);
+  return hashedPassword;
 }
 export function generateRandomID() {
-    const min = 1;
-    const max = 10000000000;
-    const randomNumber= Math.floor(Math.random() * (max - min + 1) + min);
-    return randomNumber.toString();
-  }
+  const randomNumber = Math.floor(Math.random() * (MAX_ID_NUMBER - MIN_ID_NUMBER + 1) + MIN_ID_NUMBER);
+  return randomNumber.toString();
+}
