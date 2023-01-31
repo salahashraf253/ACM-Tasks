@@ -1,5 +1,5 @@
 import express from 'express';
-import User from '../model/user';
+const User=require('../model/user').User;
 import {encryptPassword,generateRandomID}from '../HelperFunctions/index';
 
 export async function createUser(request: express.Request, response: express.Response, next: express.NextFunction) {
@@ -18,13 +18,15 @@ export async function updateUser(request: any, response: express.Response, next:
         email:request.body.email,
         accountType:request.body.accountType,
         id:userId,
-    });
-    User.updateOne({"id":userId}, {$set: userToUpdate}).then((result)=>{
+    }); 
+    User.updateOne({"id":userId}, {$set: userToUpdate}).then(()=>{
         return response.json('User replaced successfully.');
-    }).catch((err)=>{
+    }).catch((err:any)=>{
         console.log("Error at update user"+err);
     });
 }
 export async function deleteUser(request: any, response: express.Response, next: express.NextFunction){
-    
+    let userId=request.params.userId;
+    await User.deleteOne({ id: userId });
+    return response.json('User deleted successfully.');
 }
