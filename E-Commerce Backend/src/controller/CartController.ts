@@ -15,16 +15,10 @@ export async function addProduct(request: express.Request, response: express.Res
     const quantity:any=productToAdd.quantity;
     const price:any=productToAdd.price;
     const productName:any=productToAdd.name;
-    // await Product.findOne({"_id":(request.params.productId)})
-    // .then((result)=>{
-    //     productToAdd=result;
-    // });
     let cart=await Cart.findOne({"createdBy.id":userId});
-    
     if (cart) {
         //cart exists for user
         const itemIndex=cart.products.findIndex(p => p.productId as unknown === productId);
-
         if (itemIndex > -1) {
           //product exists in the cart, update the quantity
           let productItem = cart.products[itemIndex];
@@ -43,16 +37,13 @@ export async function addProduct(request: express.Request, response: express.Res
         const user=await User.findOne({"id":userId});
         const newCart = await Cart.create({
           products: [{ productName, quantity,  price,productId }],
-          totalPrice:calculateTotalPrice(productToAdd),
+          totalPrice:quantity*price,
           createdBy:user,
           createdAt: new Date()
         });
         return response.status(statusCode.CREATED).send(newCart);
       }
 
-}
-function calculateTotalPrice(product:any){
-    return product.quantity * product.price as Number;
 }
 export async function getCart(request: express.Request, response: express.Response) {
     const userId=request.params.userId;
