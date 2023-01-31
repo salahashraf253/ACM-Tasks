@@ -27,6 +27,12 @@ export async function updateUser(request: any, response: express.Response, next:
 }
 export async function deleteUser(request: any, response: express.Response, next: express.NextFunction){
     let userId=request.params.userId;
-    await User.deleteOne({ id: userId });
-    return response.json('User deleted successfully.');
+    const filter ={id:userId};
+    if(await User.exists(filter)){
+        await User.deleteOne({ id: userId });
+        return response.json('User deleted successfully.');
+    }
+    else {
+        response.json("User is not found");
+    }
 }
