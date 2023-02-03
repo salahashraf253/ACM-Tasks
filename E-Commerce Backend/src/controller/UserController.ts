@@ -9,13 +9,11 @@ export async function login(request: express.Request, response: express.Response
     if (!userFound) {
         return response.status(statusCode.NOT_AUTHORIZED).json("Not found email");
     }
-    const validPassword =await bcrypt.compare(request.body.password, userFound.password);
-    // const validPassword =comparePassword(request.body.password.toString(),userFound.password);
-
+    const validPassword =await comparePassword(request.body.password.toString(),userFound.password);
     if (!validPassword) {          
         return response.status(statusCode.NOT_AUTHORIZED).json('Wrong Password');
     }
-    return response.status(statusCode.OK).send("Signed In.");
+    return response.status(statusCode.OK).send("Logged In.");
 }
 
 export async function createUser(request: express.Request, response: express.Response) {
