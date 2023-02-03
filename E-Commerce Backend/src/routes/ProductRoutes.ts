@@ -1,7 +1,8 @@
 const express = require("express");
 import { createProduct, getProducts } from "../controller/ProductController";
-const router = express.Router();
+import upload from "../middleware/image";
 
-router.post("/products", createProduct);
+const router = express.Router();
+router.post("/products",upload.single('image'), createProduct);
 router.get("/products", getProducts);
 export default router;

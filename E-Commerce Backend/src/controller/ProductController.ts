@@ -1,20 +1,15 @@
 import express from 'express';
 import Product from '../model/Product';
 import { sortProducts } from './Sorting';
-const multer=require('multer');
-// import {MulterRequest}from 'multer';
-interface MulterRequest extends express.Request {
-    file: any;
-}
+const fs = require("fs");
 
-export async function createProduct(request: MulterRequest, response: express.Response,) {
-    // console.log("file name is: "+request.file);
-    let productToCreate=new Product(request.body);
+
+export async function createProduct(request:any, response: express.Response,) {
+    let productToCreate=request.body;
     productToCreate.createdAt=new Date();
-    // productToCreate.image=request.file.filename;
+    productToCreate.image = request.file.buffer;
     productToCreate=await Product.create(productToCreate);
     return response.status(201).json(`product created ${productToCreate}`);
-    // return response.status(200).json("Ok");
 }
 export async function getProducts(request: express.Request, response: express.Response) {
     const {category,sellerId,orderBy}=request.query;
@@ -36,13 +31,13 @@ export async function getProducts(request: express.Request, response: express.Re
 function getFilterProduct(category:any, sellerId:any){
     let filter:any="";
     if(category&&sellerId){
-        filter={"createdBy.id":sellerId, "category":category};
+        filter={"createdBy":sellerId, "category":category};
     }
     else if(category){
         filter={"category":category};
     }
     else if(sellerId){
-        filter={"createdBy.id":sellerId};
+        filter={"createdBy":sellerId};
     }
     return filter;
 }
