@@ -23,8 +23,9 @@ const cartSchema=new Schema({
         required:true
     },
     createdBy:{
-        type:userSchema,
-        required:true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
     },
     createdAt:{
         type:Date,
