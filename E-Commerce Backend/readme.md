@@ -17,11 +17,11 @@ Project Support is an open source platform that enable users share causes they'r
 ### API Endpoints
 | HTTP Verbs | Endpoints | Action |
 | --- | --- | --- |
+| GET | /users/:userId/cart | To get cart of user |
+| GET | /products/?category=<>&orderBy=<>&sellerId=<> | To get all products |
 | POST | /users | To create a new user account |
 | POST | /user/login | To login an existing user account |
 | POST | /products | To create a new product |
-| GET | /users/:userId/cart | To get cart of user |
-| GET | /products/?category=<>&orderBy=<>&sellerId=<> | To get all products |
 | PATCH | /users/:userId | To edit the details of a single user |
 | DELETE | /users/:userId | To delete a single user |
 | DELETE | /users/:userId/carts/:productId | To remove product from user's cart |
