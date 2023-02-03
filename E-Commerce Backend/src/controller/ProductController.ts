@@ -5,11 +5,16 @@ const fs = require("fs");
 
 
 export async function createProduct(request:any, response: express.Response,) {
-    let productToCreate=request.body;
-    productToCreate.createdAt=new Date();
-    productToCreate.image = request.file.buffer;
-    productToCreate=await Product.create(productToCreate);
-    return response.status(201).json(`product created ${productToCreate}`);
+    try{
+        let productToCreate=request.body;
+        productToCreate.createdAt=new Date();
+        productToCreate.image = request.file.buffer;
+        productToCreate=await Product.create(productToCreate);
+        return response.status(201).json(`product created ${productToCreate}`);
+    }
+    catch(err){
+        response.send(err);
+    }
 }
 export async function getProducts(request: express.Request, response: express.Response) {
     const {category,sellerId,orderBy}=request.query;
@@ -25,7 +30,7 @@ export async function getProducts(request: express.Request, response: express.Re
         return response.json(products);  
     })
     .catch((err)=>{
-        console.log("Error at get all products : "+err);
+        response.send(err);
     });   
 }
 function getFilterProduct(category:any, sellerId:any){
