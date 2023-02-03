@@ -13,7 +13,7 @@ Project Support is an open source platform that enable users share causes they'r
 * Create an .env file in your project root folder and add your variables. See .env.sample for assistance. -->
 ### Usage
 * Run npm start:dev to start the application.
-* Connect to the API using Postman on port 7066.
+* Connect to the API using Postman on port 3000.
 ### API Endpoints
 | HTTP Verbs | Endpoints | Action |
 | --- | --- | --- |
