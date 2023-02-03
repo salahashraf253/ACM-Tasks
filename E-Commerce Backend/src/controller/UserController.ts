@@ -1,7 +1,6 @@
 import express from 'express';
 const User=require('../model/user').User;
-import bcrypt from "bcryptjs";
-import {comparePassword,hashPassword,generateRandomID}from '../HelperFunctions/index';
+import {comparePassword,hashPassword}from '../HelperFunctions/index';
 import statusCode from '../constants/StatusCode';
 
 export async function login(request: express.Request, response: express.Response) {
@@ -18,7 +17,7 @@ export async function login(request: express.Request, response: express.Response
 
 export async function createUser(request: express.Request, response: express.Response) {
     let userToCreate=new User(request.body);
-    userToCreate.id=generateRandomID();
+    // userToCreate.id=generateRandomID();
     userToCreate.password= await hashPassword(userToCreate.password);
     userToCreate=await User.create(userToCreate);
     return response.status(statusCode.CREATED).json(`Signed Up. ${userToCreate}`);
@@ -31,9 +30,9 @@ export async function updateUser(request: any, response: express.Response){
         phoneNumber: request.body.phoneNumber,
         email:request.body.email,
         accountType:request.body.accountType,
-        id:userId,
+        // id:userId,
     }); 
-    User.updateOne({"id":userId}, {$set: userToUpdate}).then(()=>{
+    User.updateOne({"_id":userId}, {$set: userToUpdate}).then(()=>{
         return response.json('User replaced successfully.');
     }).catch((err:any)=>{
         console.log("Error at update user"+err);
@@ -41,9 +40,9 @@ export async function updateUser(request: any, response: express.Response){
 }
 export async function deleteUser(request: any, response: express.Response){
     let userId=request.params.userId;
-    const filter ={id:userId};
+    const filter ={"_id":userId};
     if(await User.exists(filter)){
-        await User.deleteOne({ id: userId });
+        await User.deleteOne({ "_id": userId });
         return response.json('User deleted successfully.');
     }
     else {
