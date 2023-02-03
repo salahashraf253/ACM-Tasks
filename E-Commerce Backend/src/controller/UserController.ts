@@ -16,7 +16,7 @@ export async function login(request: express.Request, response: express.Response
 }
 
 export async function createUser(request: express.Request, response: express.Response) {
-    let userToCreate=new User(request.body);
+    let userToCreate=request.body;
     // userToCreate.id=generateRandomID();
     userToCreate.password= await hashPassword(userToCreate.password);
     userToCreate=await User.create(userToCreate);
