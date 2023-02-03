@@ -16,11 +16,16 @@ export async function login(request: express.Request, response: express.Response
 }
 
 export async function createUser(request: express.Request, response: express.Response) {
-    let userToCreate=request.body;
-    // userToCreate.id=generateRandomID();
-    userToCreate.password= await hashPassword(userToCreate.password);
-    userToCreate=await User.create(userToCreate);
-    return response.status(statusCode.CREATED).json(`Signed Up. ${userToCreate}`);
+    try{
+        let userToCreate=request.body;
+        // userToCreate.id=generateRandomID();
+        userToCreate.password= await hashPassword(userToCreate.password);
+        userToCreate=await User.create(userToCreate);
+        return response.status(statusCode.CREATED).json(`Signed Up. ${userToCreate}`);
+    }
+    catch(err){
+        return response.send(err);
+    }
 }
 export async function updateUser(request: any, response: express.Response){
     let userId=request.params.userId;
