@@ -1,7 +1,10 @@
 import express from "express";
 import DataBase from "../src/database/index";
 import UserRoutes from "../src/routes/UserRoutes";
+import ProductRoutes from "../src/routes/ProductRoutes";
+import CartRoutes from "../src/routes/CartRoutes";
 import bodyParser from "body-parser";
+import statusCode from "./constants/StatusCode";
 require("dotenv").config();
 
 DataBase.buildDatabase();
@@ -11,16 +14,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(UserRoutes);
+app.use(ProductRoutes);
+app.use(CartRoutes);
 app.use("/public", express.static("public"));
 
-async function main() {
-  try {
-    app.listen(port, () => {
-      console.log(`server is running on port ${port}`);
-    });
-  } catch (error) {
-    console.log(`Error! ${error}`);
-  }
-}
+app.listen(port, () => {
+  console.log(`server is running on port ${port}`);
+});
 
-main();
+app.use((req, res, next) => {
+  res.status(statusCode.NOT_FOUND).json({
+    status: statusCode.NOT_FOUND,
+    message: "Page not found!",
+  });
+});
