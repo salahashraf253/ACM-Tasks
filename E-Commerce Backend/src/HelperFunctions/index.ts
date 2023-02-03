@@ -10,7 +10,7 @@ export async function hashPassword(unhashedPassword: string) {
 export async function comparePassword(unhashedPassword:string, hashedPassword:string) {
   return await bcrypt.compare(unhashedPassword,hashedPassword);
 }
-export function generateRandomID() {
-  const randomNumber = Math.floor(Math.random() * (MAX_ID_NUMBER - MIN_ID_NUMBER + 1) + MIN_ID_NUMBER);
-  return randomNumber.toString();
-}
+// export function generateRandomID() {
+//   const randomNumber = Math.floor(Math.random() * (MAX_ID_NUMBER - MIN_ID_NUMBER + 1) + MIN_ID_NUMBER);
+//   return randomNumber.toString();
+// }
