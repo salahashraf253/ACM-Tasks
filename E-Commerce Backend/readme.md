@@ -9,8 +9,21 @@
 </ul>
 
 #### Two types of user’s accounts:
-* Buyer
-* Seller
+<ul>
+<li>Buyer</li>
+  <ul>
+    <li>Add or remove a product from his cart.</li>
+    <li>View his cart or order.</li>
+    <li>View all products or that of a specific category.</li>
+    <li>Able to arrange them according to different criterias (eg. A-Z, price etc…).</li>
+  </ul>
+<li>Seller</li>
+  <ul>
+  <li>Upload products each has its image, description, price, category, and quantity/</li>
+  <li>View his products.</li>
+
+  </ul>
+</ul>
 
 <!-- ### Project Support Features
 * Users can signup and login to their accounts
