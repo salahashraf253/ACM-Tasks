@@ -1,14 +1,17 @@
 import express from 'express';
-import Product from '../model/Product';
+import { FilterQuery } from 'mongoose';
+import Product, { ProductType } from '../model/Product';
 import { sortProducts } from './Sorting';
 const fs = require("fs");
 
 
-export async function createProduct(request:any, response: express.Response,) {
+export async function createProduct(request:express.Request, response: express.Response,) {
     try{
         let productToCreate=request.body;
         productToCreate.createdAt=new Date();
-        productToCreate.image = request.file.buffer;
+        if(request.file){
+            productToCreate.image = request.file.buffer;
+        }
         productToCreate=await Product.create(productToCreate);
         return response.status(201).json(`product created ${productToCreate}`);
     }
@@ -18,8 +21,10 @@ export async function createProduct(request:any, response: express.Response,) {
 }
 export async function getProducts(request: express.Request, response: express.Response) {
     const {category,sellerId,orderBy}=request.query;
-    const filter=getFilterProduct(category,sellerId);
-    
+    let filter;
+    if(category instanceof String && sellerId instanceof String) {
+        filter=getFilterProduct(category,sellerId);
+    }
     let products=new Array();
     Product.find(filter)
     .then((result)=>{
@@ -33,7 +38,7 @@ export async function getProducts(request: express.Request, response: express.Re
         response.send(err);
     });   
 }
-function getFilterProduct(category:any, sellerId:any){
+function getFilterProduct(category:String, sellerId:String){
     let filter:any="";
     if(category&&sellerId){
         filter={"createdBy":sellerId, "category":category};
@@ -44,5 +49,5 @@ function getFilterProduct(category:any, sellerId:any){
     else if(sellerId){
         filter={"createdBy":sellerId};
     }
-    return filter;
+    return filter as Document;
 }
